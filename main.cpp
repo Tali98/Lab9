@@ -68,6 +68,7 @@ int main(){
 	}//fin while menu
 	Jugadores.clear();
 	Civilizaciones.clear();
+
 }
 
 void createCivs(){
@@ -165,8 +166,19 @@ void Ingresar(){
 				break;
 			}//case 5
 			case 6:{
-				if(Civilizaciones.size()<2){
-					cout<<"Necesita al menos dos Civilizaciones/Jugadores para ir a Batalla \n";
+				int can_fight = 0;
+				bool can= true;
+				for(int i = 0 ; i < Jugadores.size() ; i++){
+					if(Jugadores[i]->getCivilizacion()->getSize() == 0){
+						can_fight++;
+					}
+				}
+				if(can_fight == Jugadores.size()-1){
+					can = false;
+				}
+				
+				if(Jugadores.size()<2 || can == false ){
+					cout<<"Necesita al menos dos Civilizaciones/Jugadores para ir a Batalla o sus enemigos no tienen tropas \n";
 				}else{
 				Batalla(selecion);
 
@@ -269,9 +281,10 @@ void newTroop(int a){
 	cout<<"Ingrese su opcion \n";
 	int select;
 	cin>>select;
+
 	switch(select){
 		case 1:{
-			if(Jugadores[a]->getCivilizacion()->getAlimento()<90 || Jugadores[a]->getCivilizacion()->getOro()<20 || Jugadores[a]->getCivilizacion()->getCuartel() == false || Jugadores[a]->getCivilizacion()->getPoblacion_Actual() < Jugadores[a]->getCivilizacion()->getCapacidad()){
+			if(Jugadores[a]->getCivilizacion()->getAlimento()<90 || Jugadores[a]->getCivilizacion()->getOro()<20 || Jugadores[a]->getCivilizacion()->getCuartel() == false || Jugadores[a]->getCivilizacion()->getPoblacion_Actual() >= Jugadores[a]->getCivilizacion()->getCapacidad()){
 				cout<<"No tiene suficiente oro o alimento o casas \n";
 			}else{
 				int actual = Jugadores[a]->getCivilizacion()->getPoblacion_Actual();
@@ -286,7 +299,7 @@ void newTroop(int a){
 			break;
 		}//end case 1
 		case 2:{
-			if(Jugadores[a]->getCivilizacion()->getAlimento()<110 || Jugadores[a]->getCivilizacion()->getOro()<60 || Jugadores[a]->getCivilizacion()->getCuartel() == false || Jugadores[a]->getCivilizacion()->getPoblacion_Actual() < Jugadores[a]->getCivilizacion()->getCapacidad()){
+			if(Jugadores[a]->getCivilizacion()->getAlimento()<110 || Jugadores[a]->getCivilizacion()->getOro()<60 || Jugadores[a]->getCivilizacion()->getCuartel() == false || Jugadores[a]->getCivilizacion()->getPoblacion_Actual() >= Jugadores[a]->getCivilizacion()->getCapacidad()){
 				cout<<"No tiene suficiente oro o alimento o casa \n";
 			}else{
 				int actual = Jugadores[a]->getCivilizacion()->getPoblacion_Actual();
@@ -301,7 +314,7 @@ void newTroop(int a){
 			break;
 		}//end case 2
 		case 3:{
-			if(Jugadores[a]->getCivilizacion()->getAlimento()<150 || Jugadores[a]->getCivilizacion()->getOro()<90 || Jugadores[a]->getCivilizacion()->getCastillo() == false || Jugadores[a]->getCivilizacion()->getPoblacion_Actual() < Jugadores[a]->getCivilizacion()->getCapacidad()){
+			if(Jugadores[a]->getCivilizacion()->getAlimento()<150 || Jugadores[a]->getCivilizacion()->getOro()<90 || Jugadores[a]->getCivilizacion()->getCastillo() == false || Jugadores[a]->getCivilizacion()->getPoblacion_Actual() >= Jugadores[a]->getCivilizacion()->getCapacidad()){
 				cout<<"No tiene suficiente oro o alimento o casa \n";
 			}else{
 				int actual = Jugadores[a]->getCivilizacion()->getPoblacion_Actual();
@@ -339,7 +352,7 @@ void die_populace(int a){
 
 void Batalla(int a){
 	for(int i = 0 ; i < Jugadores.size() ; i++){
-		if(i == a){
+		if(i == a || Jugadores[i]->getCivilizacion()->getSize() < 1){
 
 		}else{
 			cout<<i<<" "<<Jugadores[a]->getNombre()<<endl;
